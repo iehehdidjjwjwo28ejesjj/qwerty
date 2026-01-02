@@ -1,96 +1,68 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Отчёт до лета</title>
+    <title>Время до лета</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            height: 100vh;
             margin: 0;
-            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
+        .box {
             background: white;
-            padding: 30px;
-            border-radius: 10px;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        h1, h2 {
+        h1 {
+            margin-bottom: 20px;
             color: #2c3e50;
         }
-        p {
-            line-height: 1.6;
-        }
-        ul {
-            margin-left: 20px;
-        }
-        .section {
-            margin-bottom: 30px;
-        }
-        footer {
-            text-align: center;
-            color: #777;
-            margin-top: 40px;
+        .time {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e67e22;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Отчёт о работе до лета</h1>
-
-    <p><strong>Ученик:</strong> Фамилия Имя</p>
-    <p><strong>Класс:</strong> ___</p>
-    <p><strong>Период:</strong> Сентябрь – Май</p>
-
-    <div class="section">
-        <h2>Цель отчёта</h2>
-        <p>
-            Описать выполненную работу и достигнутые результаты за учебный период до лета.
-        </p>
-    </div>
-
-    <div class="section">
-        <h2>Выполненные задачи</h2>
-        <ul>
-            <li>Изучение основных тем</li>
-            <li>Выполнение практических заданий</li>
-            <li>Работа над проектами</li>
-            <li>Подготовка к контрольным работам</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>Результаты</h2>
-        <p>
-            За данный период были улучшены знания, получен практический опыт
-            и достигнуты поставленные цели.
-        </p>
-    </div>
-
-    <div class="section">
-        <h2>Планы до лета</h2>
-        <ul>
-            <li>Закрепить изученный материал</li>
-            <li>Подготовиться к итоговым работам</li>
-            <li>Завершить все проекты</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>Заключение</h2>
-        <p>
-            Работа до лета выполнена в соответствии с поставленными задачами.
-        </p>
-    </div>
-
-    <footer>
-        © 2026
-    </footer>
+<div class="box">
+    <h1>До лета осталось</h1>
+    <div class="time" id="countdown">Загрузка...</div>
 </div>
+
+<script>
+    function updateCountdown() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const summer = new Date(year, 5, 1); // 1 июня
+
+        if (now > summer) {
+            summer.setFullYear(year + 1);
+        }
+
+        const diff = summer - now;
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("countdown").textContent =
+            `${days} дней ${hours} часов ${minutes} минут ${seconds} секунд`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+</script>
 
 </body>
 </html>
+
