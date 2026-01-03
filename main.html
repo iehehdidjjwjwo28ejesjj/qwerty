@@ -60,6 +60,7 @@
  
         button.addEventListener('click', function() {
             clicks = clicks + 1;
+            button.value = clicks;
             localStorage.setItem('clickCount', clicks);
         });
     </script>
