@@ -45,6 +45,9 @@
         <span style="font-size: 30px; margin-top: 20px;">
             Кликов: <span id="counter">0</span>
         </span>
+        <form>
+            <button type="reset">с начало?</button>
+        </form>
     </div>
     <script>
         const button = document.querySelector('.styled');
@@ -66,11 +69,5 @@
             localStorage.setItem('clickCount', clicks);
         });
     </script>
-   <div class="container"> 
-  <form>
-    <button type="reset">с начало?</button>
-  </form>  
-</div>
-
 </body>
 </html>
