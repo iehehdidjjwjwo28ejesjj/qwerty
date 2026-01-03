@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html>
-<title>SITE ULTRA PRO MAX</title>
 <head>
+    <title>SITE ULTRA PRO MAX</title>
     <style>
+        @keyframes AniBack {
+            0% {
+                background: radial-gradient(circle, black 0%, blue 0%);
+            }
+            100% {
+                background: radial-gradient(circle, black 0%, blue 150%);
+            }
         body {
-            background-color: black;  
+            background: radial-gradient( 
+                circle,
+                black,
+                blue
+                );
+            animation-name: AniBack;
+            animation-duration: 10s;
+            animation-fill-mode: forwards;
             color: white;
             text-align: center;         
             display: flex;             
