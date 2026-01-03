@@ -41,6 +41,8 @@
             height: 100vh;
         }
     </style>
+    <!-- PeerJS библиотека -->
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 </head>
 <body>
     <div class="container"> 
@@ -50,36 +52,289 @@
         <input id="button2" class="styled" type="button" value="0"/>
     </div>
     <script>
+        // Инициализация PeerJS
+        const peer = new Peer({
+            host: '0.peerjs.com',
+            port: 443,
+            path: '/',
+            pingInterval: 5000
+        });
+
+        let conn = null;
+        let isConnected = false;
+        let playerRole = null; // 'player1' или 'player2'
+        let gameActive = false;
+        let timeLeft = 30;
+        let timerInterval = null;
+        
         const button1 = document.getElementById('button1');
         const button2 = document.getElementById('button2');
         
-        let clicks1 = localStorage.getItem('clickCount1');
-        let clicks2 = localStorage.getItem('clickCount2');
+        let clicks1 = 0;
+        let clicks2 = 0;
         
-        if (clicks1 === null) {
-            clicks1 = 0;
-        } else {
-            clicks1 = parseInt(clicks1);
-        }
         button1.value = clicks1;
-        
-        if (clicks2 === null) {
-            clicks2 = 0;
-        } else {
-            clicks2 = parseInt(clicks2);
-        }
         button2.value = clicks2;
         
+        // Создаем элементы управления подключением
+        const controlsDiv = document.createElement('div');
+        controlsDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+        `;
+        
+        const peerIdDisplay = document.createElement('div');
+        peerIdDisplay.id = 'peerIdDisplay';
+        peerIdDisplay.style.marginBottom = '10px';
+        
+        const peerIdInput = document.createElement('input');
+        peerIdInput.type = 'text';
+        peerIdInput.placeholder = 'ID другого игрока';
+        peerIdInput.style.cssText = 'padding: 5px; margin-right: 5px;';
+        
+        const connectButton = document.createElement('button');
+        connectButton.textContent = 'Подключиться';
+        connectButton.style.cssText = 'padding: 5px 10px; margin-right: 5px;';
+        
+        const startGameButton = document.createElement('button');
+        startGameButton.textContent = 'Начать игру';
+        startGameButton.style.cssText = 'padding: 5px 10px;';
+        startGameButton.disabled = true;
+        
+        const statusDiv = document.createElement('div');
+        statusDiv.id = 'status';
+        statusDiv.style.marginTop = '10px';
+        
+        const timerDisplay = document.createElement('div');
+        timerDisplay.id = 'timer';
+        timerDisplay.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+        `;
+        timerDisplay.textContent = `Время: 30с`;
+        
+        controlsDiv.appendChild(peerIdDisplay);
+        controlsDiv.appendChild(peerIdInput);
+        controlsDiv.appendChild(connectButton);
+        controlsDiv.appendChild(startGameButton);
+        controlsDiv.appendChild(statusDiv);
+        document.body.appendChild(controlsDiv);
+        document.body.appendChild(timerDisplay);
+        
+        // Обработчики PeerJS
+        peer.on('open', (id) => {
+            peerIdDisplay.textContent = `Ваш ID: ${id}`;
+            statusDiv.textContent = 'Ожидание подключения...';
+        });
+        
+        peer.on('connection', (connection) => {
+            conn = connection;
+            conn.on('open', () => {
+                isConnected = true;
+                playerRole = 'player1'; // Принимающий становится первым игроком
+                statusDiv.textContent = 'Подключено! Ожидание начала игры...';
+                startGameButton.disabled = false;
+                setupConnectionHandlers();
+            });
+        });
+        
+        connectButton.onclick = () => {
+            if (peerIdInput.value) {
+                conn = peer.connect(peerIdInput.value);
+                conn.on('open', () => {
+                    isConnected = true;
+                    playerRole = 'player2'; // Подключающийся становится вторым игроком
+                    statusDiv.textContent = 'Подключено! Ожидание начала игры...';
+                    startGameButton.disabled = false;
+                    setupConnectionHandlers();
+                });
+            }
+        };
+        
+        startGameButton.onclick = () => {
+            if (isConnected) {
+                gameActive = true;
+                startGameButton.disabled = true;
+                connectButton.disabled = true;
+                peerIdInput.disabled = true;
+                statusDiv.textContent = 'Игра началась!';
+                
+                // Настройка кнопок в зависимости от роли
+                if (playerRole === 'player1') {
+                    button1.disabled = false;
+                    button2.disabled = true;
+                    button1.style.cursor = 'pointer';
+                    button2.style.cursor = 'not-allowed';
+                } else {
+                    button1.disabled = true;
+                    button2.disabled = false;
+                    button1.style.cursor = 'not-allowed';
+                    button2.style.cursor = 'pointer';
+                }
+                
+                // Запуск таймера
+                timeLeft = 30;
+                timerDisplay.textContent = `Время: ${timeLeft}с`;
+                
+                // Отправка сигнала начала игры
+                conn.send({ type: 'start_game', timeLeft: timeLeft });
+                
+                startTimer();
+            }
+        };
+        
+        function setupConnectionHandlers() {
+            conn.on('data', (data) => {
+                if (data.type === 'start_game') {
+                    gameActive = true;
+                    startGameButton.disabled = true;
+                    connectButton.disabled = true;
+                    peerIdInput.disabled = true;
+                    statusDiv.textContent = 'Игра началась!';
+                    timeLeft = data.timeLeft;
+                    
+                    // Настройка кнопок в зависимости от роли
+                    if (playerRole === 'player1') {
+                        button1.disabled = false;
+                        button2.disabled = true;
+                        button1.style.cursor = 'pointer';
+                        button2.style.cursor = 'not-allowed';
+                    } else {
+                        button1.disabled = true;
+                        button2.disabled = false;
+                        button1.style.cursor = 'not-allowed';
+                        button2.style.cursor = 'pointer';
+                    }
+                    
+                    timerDisplay.textContent = `Время: ${timeLeft}с`;
+                    startTimer();
+                }
+                else if (data.type === 'click_update') {
+                    if (data.player === 'player1') {
+                        clicks1 = data.clicks;
+                        button1.value = clicks1;
+                    } else if (data.player === 'player2') {
+                        clicks2 = data.clicks;
+                        button2.value = clicks2;
+                    }
+                }
+                else if (data.type === 'timer_update') {
+                    timeLeft = data.timeLeft;
+                    timerDisplay.textContent = `Время: ${timeLeft}с`;
+                }
+                else if (data.type === 'game_over') {
+                    endGame();
+                }
+            });
+            
+            conn.on('close', () => {
+                isConnected = false;
+                statusDiv.textContent = 'Соединение разорвано';
+            });
+        }
+        
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `Время: ${timeLeft}с`;
+                
+                // Отправка обновления времени другому игроку
+                if (conn && conn.open) {
+                    conn.send({ type: 'timer_update', timeLeft: timeLeft });
+                }
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                    
+                    // Отправка сигнала конца игры
+                    if (conn && conn.open) {
+                        conn.send({ type: 'game_over' });
+                    }
+                }
+            }, 1000);
+        }
+        
+        function endGame() {
+            gameActive = false;
+            clearInterval(timerInterval);
+            
+            // Определение победителя
+            let winnerMessage = '';
+            if (clicks1 > clicks2) {
+                winnerMessage = 'Победил Игрок 1!';
+            } else if (clicks2 > clicks1) {
+                winnerMessage = 'Победил Игрок 2!';
+            } else {
+                winnerMessage = 'Ничья!';
+            }
+            
+            statusDiv.innerHTML = `Игра окончена!<br>Игрок 1: ${clicks1} кликов<br>Игрок 2: ${clicks2} кликов<br>${winnerMessage}`;
+            
+            // Блокировка кнопок
+            button1.disabled = true;
+            button2.disabled = true;
+            button1.style.cursor = 'not-allowed';
+            button2.style.cursor = 'not-allowed';
+        }
+        
+        // Обработчики кликов по кнопкам
         button1.addEventListener('click', function() {
-            clicks1 = clicks1 + 1;
-            button1.value = clicks1;
-            localStorage.setItem('clickCount1', clicks1); 
+            if (gameActive && playerRole === 'player1' && !button1.disabled) {
+                clicks1++;
+                button1.value = clicks1;
+                
+                // Отправка обновления другому игроку
+                if (conn && conn.open) {
+                    conn.send({ 
+                        type: 'click_update', 
+                        player: 'player1', 
+                        clicks: clicks1 
+                    });
+                }
+            }
         });
         
         button2.addEventListener('click', function() {
-            clicks2 = clicks2 + 1;
-            button2.value = clicks2;
-            localStorage.setItem('clickCount2', clicks2); 
+            if (gameActive && playerRole === 'player2' && !button2.disabled) {
+                clicks2++;
+                button2.value = clicks2;
+                
+                // Отправка обновления другому игроку
+                if (conn && conn.open) {
+                    conn.send({ 
+                        type: 'click_update', 
+                        player: 'player2', 
+                        clicks: clicks2 
+                    });
+                }
+            }
+        });
+        
+        // Изначально блокируем кнопки до начала игры
+        button1.disabled = true;
+        button2.disabled = true;
+        button1.style.cursor = 'not-allowed';
+        button2.style.cursor = 'not-allowed';
+        
+        // Обработка закрытия страницы
+        window.addEventListener('beforeunload', () => {
+            if (conn) {
+                conn.close();
+            }
+            if (peer) {
+                peer.destroy();
+            }
         });
     </script>
 </body>
