@@ -3,25 +3,6 @@
 <head>
     <title>SITE ULTRA PRO MAX</title>
     <style>
-        .styled {
-            border: 0;
-            color: white;
-            background-color: green;
-            cursor: pointer;
-            padding: 40px 80px;
-            border-radius: 400px;
-            font-size: 100px;
-            display: block;
-            margin: 20px auto; 
-            transition: background-color 0.6s ease, transform 0.3s ease;             
-        }
-        .styled:hover {
-            background-color: blue;
-        }
-        .styled:active {
-            background-color: red;
-            transform: scale(0.6, 0.6);
-        }
         body {
             background-color: black;
             color: white;
@@ -50,24 +31,6 @@
         </span>
     </div>
     <script>
-        const button = document.querySelector('.styled');
-        const counterElement = document.getElementById('counter');
-        
-        let clicks = localStorage.getItem('clickCount');
-        
-        if (clicks === null) {
-            clicks = 0;
-        } else {
-            clicks = parseInt(clicks);
-        }
-        
-        counterElement.textContent = clicks;
-        
-        button.addEventListener('click', function() {
-            clicks = clicks + 1;
-            counterElement.textContent = clicks;
-            localStorage.setItem('clickCount', clicks);
-        });
     </script>
 </body>
 </html>
