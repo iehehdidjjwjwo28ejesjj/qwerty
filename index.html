@@ -61,7 +61,7 @@
         counterElement.textContent = clicks;
         
         button.addEventListener('click', function() {
-            clicks++;
+            clicks++ * 2;
             counterElement.textContent = clicks;
             localStorage.setItem('clickCount', clicks);
         });
