@@ -3,22 +3,54 @@
 
 <head>
     <meta charset="UTF-8">
-    <style>
-        input {
-            color: black;
-            /* цвет введённого текста */
-            opacity: 1;
-        }
-    </style>
-</head>
-<style>
+        <style>
     body {
         background-color: black;
         color: white;
         display: flex;
         flex-direction: column; 
         align-items: center;
-        height: 50vh;
+        min-height: 50vh;
+        font-size: 1.8em;
+        padding: 40px;
+    }
+    
+    input {
+        color: black;
+        opacity: 1;
+        font-size: 1.2em;
+        padding: 15px;
+        margin: 10px;
+        width: 400px;
+    }
+    
+    .check {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 1.5em;
+        margin: 30px 0;
+    }
+    
+    input::placeholder {
+        color: black;
+        opacity: 1;
+    }
+    
+    button {
+        font-size: 2em;
+        padding: 25px 60px;
+        margin-top: 40px;
+        cursor: pointer;
+    }
+    
+    a h1 {
+        font-size: 4em;
+        margin-bottom: 60px;
+    }
+    
+    form {
+        margin: 25px 0;
     }
 </style>
 </head>
