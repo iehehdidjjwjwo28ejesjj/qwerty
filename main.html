@@ -41,31 +41,25 @@
         <span style="font-size: 50px; margin-bottom: 40px;">
             Нажми на кнопку
         </span>
-        <input  class="styled" type="button" value="Clik"/>
-        <span style="font-size: 30px; margin-top: 20px;">
-            Кликов: <span id="counter">0</span>
-        </span>
-            <span style="font-size: 30px; margin-top: 20px;">
-                Reset:
+        <span>
+        <input  class="styled" type="button" value="0"/>
         </span>
     </div>
     <script>
         const button = document.querySelector('.styled');
-        const counterElement = document.getElementById('counter');
         
         let clicks = localStorage.getItem('clickCount');
-        
+   
         if (clicks === null) {
             clicks = 0;
         } else {
             clicks = parseInt(clicks);
         }
-        
-        counterElement.textContent = clicks;
-        
+
+        button.value = clicks;   
+ 
         button.addEventListener('click', function() {
             clicks = clicks + 1;
-            counterElement.textContent = clicks;
             localStorage.setItem('clickCount', clicks);
         });
     </script>
