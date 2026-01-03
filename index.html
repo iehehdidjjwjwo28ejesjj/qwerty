@@ -3,6 +3,17 @@
 <head>
     <title>SITE ULTRA PRO MAX</title>
  <style>
+     .styled {
+         border: 0;
+         color: blue;
+         background-color: yellow;
+     }
+     .styled:hover {
+         background-color: blue;
+     }
+     .styled:active {
+         background-color: red;
+     }
         body {
             background-color: black;
             color: white;
@@ -10,12 +21,11 @@
             display: flex;             
             justify-content: center;   
             align-items: center;       
-            height: 100vh;                       
-        }
-        
+            height: 100vh;   
+        }  
     </style>
 </head>
 <body>
-    <button>Click ME</button>
+     <input class="styled" type="button" value="Clik" />
 </body>
 </html>
