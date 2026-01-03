@@ -44,30 +44,42 @@
 </head>
 <body>
     <div class="container"> 
-        <span id="counter">0</span>
         <input id="button1" class="styled" type="button" value="0"/>
          <br>
          <br>        
-        <span id="counter2">0</span>
-        <input id="button2" class="styled" type="button" value="Кнопка 2"/>
+        <input id="button2" class="styled" type="button" value="0"/>
     </div>
     <script>
-        const button = document.querySelector('.styled');
+        const button1 = document.getElementById('button1');
+        const button2 = document.getElementById('button2');
         
-        let clicks = localStorage.getItem('clickCount');
-   
-        if (clicks === null) {
-            clicks = 0;
+        let clicks1 = localStorage.getItem('clickCount1');
+        let clicks2 = localStorage.getItem('clickCount2');
+        
+        if (clicks1 === null) {
+            clicks1 = 0;
         } else {
-            clicks = parseInt(clicks);
+            clicks1 = parseInt(clicks1);
         }
-
-        button.value = clicks;   
- 
-        button.addEventListener('click', function() {
-            clicks = clicks + 1;
-            button.value = clicks;
-            localStorage.setItem('clickCount', clicks);
+        button1.value = clicks1;
+        
+        if (clicks2 === null) {
+            clicks2 = 0;
+        } else {
+            clicks2 = parseInt(clicks2);
+        }
+        button2.value = clicks2;
+        
+        button1.addEventListener('click', function() {
+            clicks1 = clicks1 + 1;
+            button1.value = clicks1;
+            localStorage.setItem('clickCount1', clicks1); 
+        });
+        
+        button2.addEventListener('click', function() {
+            clicks2 = clicks2 + 1;
+            button2.value = clicks2;
+            localStorage.setItem('clickCount2', clicks2); 
         });
     </script>
 </body>
