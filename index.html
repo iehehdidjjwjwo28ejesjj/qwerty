@@ -5,20 +5,21 @@
     <style>
         @keyframes AniBack {
             0% {
-                background: radial-gradient(circle, black 0%, blue 0%);
+                background: radial-gradient(circle, black 0%, blue --r: 0%);
             }
             50% {
-                background: radial-gradient(circle, black 0%, blue 70%);
+                background: radial-gradient(circle, black 0%, blue --r: 70%);
             }
             100% {
-                background: radial-gradient(circle, black 0%, blue 150%);
+                background: radial-gradient(circle, black 0%, blue --r: 150%);
             }
         }
         body {
+            --r: 0%;
             background: radial-gradient( 
                 circle,
-                black,
-                blue
+                black 0%,
+                blue var(--r)
                 );
             animation-name: AniBack;
             animation-duration: 1s;
