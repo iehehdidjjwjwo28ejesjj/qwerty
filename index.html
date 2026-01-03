@@ -48,13 +48,22 @@
     </div>
     <script>
         const button = document.querySelector('.styled');
-        const counterElement = document.getElementById('counter');    
-
-        let clicks = 0;
-
+        const counterElement = document.getElementById('counter');
+        
+        let clicks = localStorage.getItem('clickCount');
+        
+        if (clicks === null) {
+            clicks = 0;
+        } else {
+            clicks = parseInt(clicks);
+        }
+        
+        counterElement.textContent = clicks;
+        
         button.addEventListener('click', function() {
             clicks++;
             counterElement.textContent = clicks;
+            localStorage.setItem('clickCount', clicks);
         });
     </script>
         <div class="container"> 
