@@ -22,6 +22,12 @@
             background-color: red;
             transform: scale(0.8, 0.8);
         }
+        #button1 {
+            background-color: green;
+        }      
+        #button2 {
+            background-color: purple;
+        }
         body {
             background-color: black;
             color: white;
@@ -38,9 +44,12 @@
 </head>
 <body>
     <div class="container"> 
-        <span> 
-            <input  class="styled" type="button" value="0"/>
-        </span>
+        <div class="counter-display">Jj<span id="counter">0</span></div>
+        <input id="button1" class="styled" type="button" value="0"/>
+         <br>
+         <br>        
+        <div class="counter-display">Кнопка 2: <span id="counter2">0</span></div>
+        <input id="button2" class="styled" type="button" value="Кнопка 2"/>
     </div>
     <script>
         const button = document.querySelector('.styled');
