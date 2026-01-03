@@ -20,7 +20,7 @@
         }
         .styled:active {
             background-color: red;
-            transform: scale(7, 0.5);
+            transform: scale(0.6, 0.6);
         }
         body {
             background-color: black;
@@ -47,7 +47,15 @@
         </span>
     </div>
     <script>
-        
+        const button = document.querySelector('.styled');
+        const counterElement = document.getElementById('counter');    
+
+        let clicks = 0;
+
+        button.addEventListener('click', function() {
+            clicks++;
+            counterElement.textContent = clicks;
+        });
     </script>
 </body>
 </html>
