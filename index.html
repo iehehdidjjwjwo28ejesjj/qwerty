@@ -1,62 +1,78 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
-        <style>
-    body {
-        background-color: black;
-        color: white;
-        display: flex;
-        flex-direction: column; 
-        align-items: center;
-        min-height: 50vh;
-        font-size: 1.8em;
-        padding: 40px;
-    }
-    
-    input {
-        color: black;
-        opacity: 1;
-        font-size: 1.2em;
-        padding: 15px;
-        margin: 10px;
-        width: 400px;
-    }
-    
-    .check {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        font-size: 1.5em;
-        margin: 30px 0;
-    }
-    
-    input::placeholder {
-        color: black;
-        opacity: 1;
-    }
-    
-    button {
-        font-size: 2em;
-        padding: 25px 60px;
-        margin-top: 40px;
-        cursor: pointer;
-    }
-    
-    a h1 {
-        font-size: 4em;
-        margin-bottom: 60px;
-    }
-    
-    form {
-        margin: 25px 0;
-    }
-</style>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+            font-size: 1.8em;
+            padding: 40px;
+            margin: 0;
+        }
+        
+        input {
+            color: black;
+            opacity: 1;
+            font-size: 1.2em;
+            padding: 15px;
+            margin: 10px;
+            width: 400px;
+        }
+        
+        .check {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.5em;
+            margin: 30px 0;
+        }
+        
+        .check input[type="checkbox"] {
+            width: 30px;
+            height: 30px;
+            transform: scale(1.5);
+        }
+        
+        input::placeholder {
+            color: black;
+            opacity: 1;
+        }
+        
+        button {
+            font-size: 2em;
+            padding: 25px 60px;
+            margin-top: 40px;
+            cursor: pointer;
+        }
+        
+        a h1 {
+            font-size: 4em;
+            margin-bottom: 60px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        form {
+            margin: 25px 0;
+            font-size: 1.2em;
+        }
+        
+        .check a {
+            color: lightblue;
+            text-decoration: none;
+        }
+        
+        .check a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-
 <body>
-
     <a href="main.html">
         <h1>тут</h1>
     </a>
@@ -64,39 +80,24 @@
     <form>
         <label>Введите имя:</label>
         <input type="text" placeholder="Введите имя" minlength="4">
-    </form><br>
+    </form>
 
     <form>
         <label>Введите пароль:</label>
         <input type="password" placeholder="Введите пароль" minlength="6">
-    </form><br>
+    </form>
 
     <form>
         <label>Введите пароль занова:</label>
         <input type="password" placeholder="Введите пароль занова" minlength="6">
-    </form><br>
+    </form>
+
     <label class="check">
-    <input type="checkbox" required>
-    вы согласны с условиями
-    <a href="police.html" target="_blank">пользовательского соглашения</a>
-   </label>
+        <input type="checkbox" required>
+        <span>вы согласны с условиями</span>
+        <a href="police.html" target="_blank">пользовательского соглашения</a>
+    </label>
 
-    <style>
-        .check {
-            display: flex;
-            align-items: center;
-            /* ← главное */
-            gap: 6px;
-        }
-    </style><br>
-    <style>
-        input::placeholder {
-            color: black;
-            opacity: 1;
-        }
-    </style>
     <button>Зарегистрироваться</button>
-
 </body>
-
 </html>
